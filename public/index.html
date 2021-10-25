@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+    Chat...
+    <hr />
+    <div style="border: solid 2px black; height: 150px; width: 30%; overflow-y: auto; border-radius: 25px;" >
+        <div id="historial"></div>
+    </div>
+    <br/>
+    <div>
+        Usuario: <input id="usuario" type="text" >
+        Mensaje: <input id="mensaje" type="text"  >
+        <button onclick="obj.enviar();">Enviar</button>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        window.onload= function(){
+            obj.conectar();
+        }
+        var obj = {
+            socket: null,
+            conectar: ()=>{
+                console.log('Nuevo conección IO..');
+                obj.socket = io('http://34.192.15.155:8080/'); //Nueva conección
+                obj.escuchar();
+            },
+            enviar: ()=>{
+                const { socket } = obj;
+                if(socket != null){
+                    const usuario = document.getElementById('usuario').value;
+                    const mensaje = document.getElementById('mensaje').value;
+                    socket.emit('chat', { usuario, mensaje });//Enviar  mensaje
+                }
+            },
+            escuchar:()=>{
+                const { socket } = obj;
+                if(socket != null){
+                    socket.on('recibe', data=>{
+                        console.log('Escucha::',data)
+                        const historial = document.getElementById('historial').innerHTML;
+                        document.getElementById('historial').innerHTML = `${history}<hr/>${data.usuario}:: ${data.mensaje}`;
+                    });
+                }
+            }
+        };
+    </script>
+</body>
+</html>
