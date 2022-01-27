@@ -13,9 +13,16 @@ const io = SocketIO(servidor);
 
 io.on('connection',(socket)=>{
     console.log('Nueva conección', socket.id); //id del usuario conectado
-
-    //Escuchar eventos (recibe mesajes) pero solo mensaje "chat"
+    socket.join("a");
     socket.on('chat', (data)=>{
+        console.log("mensaje: todos: ", data);
+        io.to("a").emit('recibe', data);
+        io.to("b").emit('recibe', data);
+    });
+    
+    
+    //Escuchar eventos (recibe mesajes) pero solo mensaje "chat"
+    socket.on('chat1', (data)=>{
         console.log("mensaje:: ", data);
         //Emitir datos a los conectados pero solo tipo "recibe"
         io.sockets.emit('recibe', data);

@@ -17,6 +17,8 @@
         Usuario: <input id="usuario" type="text" >
         Mensaje: <input id="mensaje" type="text"  >
         <button onclick="obj.enviar();">Enviar</button>
+        cuarto: <input id="mensaje1" type="text"  >
+        <button onclick="obj.enviar();">Enviar</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -27,7 +29,7 @@
             socket: null,
             conectar: ()=>{
                 console.log('Nuevo conección IO..');
-                obj.socket = io('http://34.192.15.155:8080/'); //Nueva conección
+                obj.socket = io('http://localhost:80/'); //Nueva conección
                 obj.escuchar();
             },
             enviar: ()=>{
