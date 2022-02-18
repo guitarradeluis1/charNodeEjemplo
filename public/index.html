@@ -17,9 +17,8 @@
         Usuario: <input id="usuario" type="text" >
         Mensaje: <input id="mensaje" type="text"  >
         <button onclick="obj.enviar();">Enviar</button>
-        cuarto: <input id="mensaje1" type="text"  >
-        <button onclick="obj.enviar();">Enviar</button>
     </div>
+    <div id="lugar"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         window.onload= function(){
@@ -27,9 +26,11 @@
         }
         var obj = {
             socket: null,
+            URLactual: '',
             conectar: ()=>{
-                console.log('Nuevo conección IO..');
-                obj.socket = io('http://localhost:80/'); //Nueva conección
+                obj.URLactual = window.location.href;
+                document.getElementById('lugar').innerText = obj.URLactual;
+                obj.socket = io(`${obj.URLactual}`); //Nueva conección 'http://localhost:80/'
                 obj.escuchar();
             },
             enviar: ()=>{
@@ -44,9 +45,10 @@
                 const { socket } = obj;
                 if(socket != null){
                     socket.on('recibe', data=>{
-                        console.log('Escucha::',data)
-                        const historial = document.getElementById('historial').innerHTML;
-                        document.getElementById('historial').innerHTML = `${history}<hr/>${data.usuario}:: ${data.mensaje}`;
+                        console.log('Escucha::',data);
+                        let p = document.createElement('p');
+                        p.innerHTML = `<b>${data.usuario}:</b> ${data.mensaje}`;
+                        document.getElementById('historial').appendChild(p);
                     });
                 }
             }

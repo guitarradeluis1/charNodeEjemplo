@@ -16,13 +16,12 @@ io.on('connection',(socket)=>{
     socket.join("a");
     socket.on('chat', (data)=>{
         console.log("mensaje: todos: ", data);
-        io.to("a").emit('recibe', data);
-        io.to("b").emit('recibe', data);
+        //io.to("a").emit('recibe', data);
     });
     
     
     //Escuchar eventos (recibe mesajes) pero solo mensaje "chat"
-    socket.on('chat1', (data)=>{
+    socket.on('chat', (data)=>{
         console.log("mensaje:: ", data);
         //Emitir datos a los conectados pero solo tipo "recibe"
         io.sockets.emit('recibe', data);
